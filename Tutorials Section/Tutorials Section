@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 10
+
+typedef struct {
+    char title[50];
+    char description[100];
+    char difficulty[10]; // Easy, Medium, Hard
+    char language[10]; // C, Java, Python
+    int completed; // 0 = Not done, 1 = Done
+} Tutorial;
+
+Tutorial tutorials[MAX] = {
+    {"Intro to C", "Basics of C programming", "Easy", "C", 0},
+    {"Loops in C", "Learn for and while loops", "Medium", "C", 0},
+    {"Functions in C", "Create and use functions", "Medium", "C", 0},
+    {"Pointers", "Understanding pointers in C", "Hard", "C", 0},
+    {"OOP in Java", "Java classes and objects", "Medium", "Java", 0},
+    {"Java Basics", "Intro to Java programming", "Easy", "Java", 0},
+    {"Python Basics", "Getting started with Python", "Easy", "Python", 0},
+    {"Python Loops", "Using loops in Python", "Medium", "Python", 0}
+};
+
+void listTutorials(char filter[]) {
+    printf("\nAvailable Tutorials:\n");
+    printf("-----------------------------------------------------------\n");
+    for (int i = 0; i < MAX; i++) {
+        if (strlen(filter) == 0 || strcmp(tutorials[i].difficulty, filter) == 0) {
+            printf("%d. [%s] %s (%s) - %s\n", i+1,
+                   tutorials[i].language,
+                   tutorials[i].title,
+                   tutorials[i].difficulty,
+                   tutorials[i].completed ? "Completed" : "Not Started");
+            printf(" > %s\n", tutorials[i].description);
+        }
+    }
+}
+
+void startTutorial(int index) {
+    if (index < 1 || index > MAX) {
+        printf("Invalid tutorial number.\n");
+        return;
+    }
+
+    printf("\nStarting Tutorial: %s\n", tutorials[index-1].title);
+    printf("Description: %s\n", tutorials[index-1].description);
+    printf("Difficulty: %s\n", tutorials[index-1].difficulty);
+
+    // Simulate embedded code editor
+    printf("\n[Embedded Code Editor Placeholder]\n");
+    printf(">> Type your C code here (simulated)...\n");
+    printf("...Done practicing.\n");
+
+    tutorials[index-1].completed = 1;
+    printf("✅ Tutorial marked as completed!\n");
+}
+
+void showProgress() {
+    int completed = 0;
+    for (int i = 0; i < MAX; i++) {
+        if (tutorials[i].completed) completed++;
+    }
+    printf("\nProgress Tracker: %d / %d tutorials completed.\n", completed, MAX);
+}
+
+int main() {
+    int choice, tutorialNumber;
+    char filter[10];
+
+    while (1) {
+        printf("\n=== Tutorial Menu ===\n");
+        printf("1. View All Tutorials\n");
+        printf("2. Filter by Difficulty (Easy/Medium/Hard)\n");
+        printf("3. Start Tutorial\n");
+        printf("4. Show Progress\n");
+        printf("5. Exit\n");
+        printf("Choose an option: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                listTutorials("");
+                break;
+            case 2:
+                printf("Enter difficulty (Easy/Medium/Hard): ");
+                scanf("%s", filter);
+                listTutorials(filter);
+                break;
+            case 3:
+                printf("Enter tutorial number to start: ");
+                scanf("%d", &tutorialNumber);
+                startTutorial(tutorialNumber);
+                break;
+            case 4:
+                showProgress();
+                break;
+            case 5:
+                printf("Exiting... Goodbye!\n");
+                return 0;
+            default:
+                printf("Invalid choice.\n");
+        }
+    }
+    return 0;
+}
